@@ -1,5 +1,38 @@
 #!/bin/bash
 
+# Compare dot seperated versions
+# reference: http://stackoverflow.com/questions/4023830/how-compare-two-strings-in-dot-separated-version-format-in-bash
+vercomp () {
+    if [[ $1 == $2 ]]
+    then
+        return 0
+    fi
+    local IFS=.
+    local i ver1=($1) ver2=($2)
+    # fill empty fields in ver1 with zeros
+    for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
+    do
+        ver1[i]=0
+    done
+    for ((i=0; i<${#ver1[@]}; i++))
+    do
+        if [[ -z ${ver2[i]} ]]
+        then
+            # fill empty fields in ver2 with zeros
+            ver2[i]=0
+        fi
+        if ((10#${ver1[i]} > 10#${ver2[i]}))
+        then
+            return 1
+        fi
+        if ((10#${ver1[i]} < 10#${ver2[i]}))
+        then
+            return 2
+        fi
+    done
+    return 0
+}
+
 MAPRVER="5.2.0"
 # Docker Checks
 if [[ -z $(which docker)  ]] ; then
@@ -9,7 +42,8 @@ if [[ -z $(which docker)  ]] ; then
 fi
 
 dv=$(docker --version | awk '{ print $3}' | sed 's/,//')
-if [[ $dv < 1.6.0 ]] ; then
+vercomp $dv 1.6.0
+if [[ $? = 2 ]] ; then
         echo " Docker version installed on this server : $dv.  Please install Docker version 1.6.0 or later."
         exit
 fi
@@ -65,7 +99,9 @@ if [[ ${NUMBEROFNODES} -lt ${#disks[@]} ]] ; then
 	cldbdisks=$(join , ${disks[0]} ${disks[@]:$NUMBEROFNODES})
 fi
 
-cldb_cid=$(docker run -d --privileged -h ${CLUSTERNAME}c1 -e "DISKLIST=$cldbdisks" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-control-cent67:${MAPRVER})
+mkdir -p /tmp/zkdata:/opt/mapr/zkdata
+
+cldb_cid=$(docker run -d --privileged -h ${CLUSTERNAME}c1 -v /tmp/zkdata:/opt/mapr/zkdata -e "DISKLIST=$cldbdisks" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-control-cent67:${MAPRVER})
 container_ids[0]=$cldb_cid
 
 sleep 10
