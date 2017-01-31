@@ -17,16 +17,17 @@ Port forwarding will be setup to provide access to the MapR Control System on po
 
 Docker Requirements and set-up:
 -------------------------------
-	1. Docker v1.6.0 or later is required to run this set-up script.
 
-	2. Docker Network : Docker containers MapR cluster require public IPs. Please work with your IT to get a routable IP network range for the docker bridge.
-		- Configure a Network brige with an IP from the routable IP range.
-		- Add the following options to the docker daemon : '-b <bridgename> --fixed-cidr=cidr-or-routable-range'
-			Eg: '-b br0 --fixed-cidr=10.10.101.16/29' - This makes docker to allocate the IPs 10.10.101.17 - 10.10.101.22 (6 IPs). 
+1. Docker v1.6.0 or later is required to run this set-up script.
 
-	3. (optional) Docker Disk options: Please add the following options to the docker daemon : '--storage-opt dm.basesize=30G --storage-opt dm.loopdatasize=200G'
+2. Docker Network : Docker containers MapR cluster require public IPs. Please work with your IT to get a routable IP network range for the docker bridge.
+	- Configure a Network brige with an IP from the routable IP range.
+	- Add the following options to the docker daemon : '-b <bridgename> --fixed-cidr=cidr-or-routable-range'
+		Eg: '-b br0 --fixed-cidr=10.10.101.16/29' - This makes docker to allocate the IPs 10.10.101.17 - 10.10.101.22 (6 IPs). 
 
-	4. Restart the docker daemon with the above options.
+3. (optional) Docker Disk options: Please add the following options to the docker daemon : '--storage-opt dm.basesize=30G --storage-opt dm.loopdatasize=200G'
+
+4. Restart the docker daemon with the above options.
 
 Container Requirement: 
 ----------------------
