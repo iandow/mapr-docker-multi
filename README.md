@@ -3,18 +3,6 @@ Quickstart for running multi-node MapR clusters in Docker
 
 This project provides a simple bash script for creating multi-node MapR clusters in Docker. Each node in the cluster will run in its own Docker container.
 
-Usage: 
-------
-
-Run the launch script corresponding to the MapR version you want to deploy, like this:  
-
-`./launch-cluster.sh ClusterName NumberOfNodes MemSize-in-kB Path-to-DisklistFile`
-
-For example, `5.2.0/launch-cluster.sh demo 3 24576000 /tmp/diskfile.txt` will launch a 3 node MapR version 5.2.0 cluster. Each node will run as a different Docker container with 24GB of RAM memory allocated to it. 
-
-Port forwarding will be setup to provide access to the MapR Control System on port 9443 of the control node.
-
-
 Docker Requirements and set-up:
 -------------------------------
 
@@ -31,10 +19,10 @@ Docker Requirements and set-up:
 
 Container Requirement: 
 ----------------------
-	Each container in the cluster requires at least one disk. Please make sure enough number of free disks are there in the system.
-	Create a disk list file with one disk/partition per line.
-	Eg:
-	 # cat /tmp/disklist.txt 
+
+Each container in the cluster requires at least one disk. Please make sure enough number of free disks are there in the system. Create a disk list file with one disk/partition per line. For example:
+	
+	# cat /tmp/disklist.txt 
 	/dev/sdb
 	/dev/sdc
 	/dev/sdd
@@ -42,7 +30,14 @@ Container Requirement:
 	/dev/sdf
 	#
 
-Script : launch-cluster.sh
+Usage: 
+------
 
-Go to the dir where the script is downloaded to and run:
+Run the launch script corresponding to the MapR version you want to deploy, like this:  
+
+`./launch-cluster.sh ClusterName NumberOfNodes MemSize-in-kB Path-to-DisklistFile`
+
+For example, `5.2.0/launch-cluster.sh demo 3 24576000 /tmp/diskfile.txt` will launch a 3 node MapR version 5.2.0 cluster. Each node will run as a different Docker container with 24GB of RAM memory allocated to it. 
+
+Port forwarding will be setup to provide access to the MapR Control System on port 9443 of the control node.
 
