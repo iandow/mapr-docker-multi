@@ -39,5 +39,5 @@ Run the launch script corresponding to the MapR version you want to deploy, like
 
 For example, `./5.2.0/launch-cluster.sh demo 3 24576000 /tmp/diskfile.txt` will launch a 3 node MapR version 5.2.0 cluster. Each node will run as a different Docker container with 24GB of RAM memory allocated to it. 
 
-Port forwarding will be setup to provide access to the MapR Control System on port 9443 of the control node.
+Port forwarding will be setup to provide access to the MapR Control System on port 9443 of the control node. To change that port, or change any other binding to the docker host, just edit the `docker run` commands in the launch-cluster.sh script.
 
